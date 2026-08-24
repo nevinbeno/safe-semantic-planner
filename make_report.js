@@ -1,9 +1,14 @@
 const fs = require("fs");
+const { execSync } = require("child_process");
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel, ImageRun,
   Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
-  AlignmentType, LevelFormat, convertInchesToTwip
+  AlignmentType, LevelFormat, convertInchesToTwip,
+  Header, Footer, PageNumber, NumberFormat,
 } = require("docx");
+
+const AUTHOR_NAME = "Nevin Beno";
+const AUTHOR_REG_NO = "TCR24CS052";
 
 const PAGE_W = 12240, PAGE_H = 15840; // US Letter
 
@@ -55,9 +60,26 @@ function simpleTable(headerRow, rows) {
   });
 }
 
+const reportFooter = new Footer({
+  children: [
+    new Paragraph({
+      border: { top: { style: BorderStyle.SINGLE, size: 4, color: "AAAAAA", space: 4 } },
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 100 },
+      children: [
+        new TextRun({ text: `${AUTHOR_NAME}  |  ${AUTHOR_REG_NO}  |  Page `, size: 18, color: "666666" }),
+        new TextRun({ children: [PageNumber.CURRENT], size: 18, color: "666666" }),
+        new TextRun({ text: " of ", size: 18, color: "666666" }),
+        new TextRun({ children: [PageNumber.TOTAL_PAGES], size: 18, color: "666666" }),
+      ],
+    }),
+  ],
+});
+
 const doc = new Document({
   sections: [{
     properties: { page: { size: { width: PAGE_W, height: PAGE_H }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } },
+    footers: { default: reportFooter },
     children: [
       new Paragraph({ text: "Design of a Safe Semantic Planner in a Finite Cartesian State Space", heading: HeadingLevel.TITLE, spacing: { after: 100 } }),
       new Paragraph({ children: [new TextRun({ text: "PCCST503 — Machine Learning, Assignment 1 — Design Report", size: 24, color: "555555" })], spacing: { after: 400 } }),
@@ -155,4 +177,18 @@ const doc = new Document({
 Packer.toBuffer(doc).then(buf => {
   fs.writeFileSync("design_report.docx", buf);
   console.log("wrote design_report.docx");
+
+  // Best-effort: also produce a PDF via LibreOffice's headless converter,
+  // so `make report` yields both files in one step. This needs LibreOffice
+  // (`soffice`) installed -- if it isn't, the .docx above is still written
+  // successfully and we just note that the PDF step was skipped.
+  try {
+    execSync("soffice --headless --convert-to pdf design_report.docx", { stdio: "pipe" });
+    console.log("wrote design_report.pdf");
+  } catch (err) {
+    console.warn("Skipped PDF conversion (LibreOffice/soffice not found on PATH).");
+    console.warn("design_report.docx was still created successfully.");
+    console.warn("To get a PDF: open the .docx in Word/LibreOffice and 'Export as PDF',");
+    console.warn("or install LibreOffice and re-run `make report`.");
+  }
 });

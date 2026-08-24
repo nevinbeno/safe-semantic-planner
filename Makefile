@@ -28,9 +28,17 @@ bench: $(BENCH_BIN)
 # explicit target rather than part of `all`/`run`/`bench`.
 # Run `make run`, `make bench`, and the two plot_*.py scripts FIRST so the
 # charts this reads actually reflect your current code.
+# Regenerates design_report.docx (and design_report.pdf, if LibreOffice's
+# `soffice` is on PATH) from the current chart PNGs.
+# Needs Node.js with the `docx` npm package installed (`npm install`,
+# reading package.json) -- a heavier dependency than the rest of this
+# project, so it's a separate, explicit target rather than part of
+# `all`/`run`/`bench`.
+# Run `make run`, `make bench`, and the two plot_*.py scripts FIRST so the
+# charts this reads actually reflect your current code.
 report:
 	node make_report.js
 
 clean:
-	rm -f $(BIN) $(BENCH_BIN) $(REPORT)
+	rm -f $(BIN) $(BENCH_BIN) $(REPORT) design_report.pdf
 	rm -rf results

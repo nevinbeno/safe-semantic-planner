@@ -1,0 +1,5 @@
+id,x,y,bad,role
+4,1,-2,0,normal
+3,2,0,0,goal
+2,1,0,0,normal
+1,0,0,0,start
