@@ -1,21 +1,34 @@
 # Safe Semantic Planner (LPA*)
 
 **PCCST503 — Machine Learning, Assignment 1**
+
+**Name:** Nevin Beno  
+**University Register No.:** TCR24CS052
+
 C++17 implementation of a planner that computes a safe, low-cost path
-through a finite Cartesian state space, avoiding designated bad states and
-replanning efficiently when the environment changes — using **LPA\* (Lifelong
-Planning A\*)**.
+through a finite Cartesian state space, avoiding designated bad states
+and replanning efficiently when the environment changes — using
+**LPA* (Lifelong Planning A*)**.
 
 ## Deliverables in this repo
 
 | # | Deliverable | Where |
 |---|---|---|
 | 1 | C++ source code | `include/`, `src/` |
-| 2 | Design report | `design_report.docx` / `design_report.pdf` |
-| 3 | Experimental results | `results/results.csv`, `results/charts/` |
-| 4 | User manual | `USER_MANUAL.md` |
-| 5 | Demonstration | run `make run` (see Quick Start) |
+| 2 | Design report | [Design Report](design_report.pdf) |
+| 3 | Experimental results | `results/` |
+| 4 | User manual | [USER MANUAL](USER_MANUAL.md) |
+| 5 | Demonstration | [Demo Video](https://drive.google.com/file/d/1Qv3x9sbdiw0Ze6V9h2KS-mRM1EDt_UCM/view?usp=drive_link) |
 | Bonus | Incremental replanning | `LPAStarPlanner::onTransitionChanged` / `onStateBadnessChanged` / `onGoalChanged` + `replan()` — benchmarked in `results/charts/` |
+
+## Dependencies:
+- C++17 compiler (g++/clang++)
+- Python 3 with `pandas` and
+`matplotlib` (`pip install -r pip_requirements.txt`) for the charts. 
+- Node.js with the `docx` package (`npm install`, reading `package.json`) only if you want to regenerate the `.docx` report — everything else works without Node.
+
+Full usage details (what each command does, how to read the output, how
+to troubleshoot) are in [USER_MANUAL.md](USER_MANUAL.md)
 
 ## Quick start
 
@@ -28,8 +41,6 @@ pipeline (benchmarks, charts, report), see **"Regenerating everything from
 scratch"** below.
 
 ## Project structure
-
-**Static (source you write / documents provided):**
 ```
 .
 ├── benchmark               (binary file generated)
@@ -103,11 +114,11 @@ scratch"** below.
 ## Regenerating everything from scratch
 
 ```
-make clean                # wipe binaries, results/, and design_report.
+make clean                # wipe binaries, results/, and generated reports
 make run                  # -> results/plots/*.csv
 make bench                # -> results/results.csv
-python3 plot_results.py   # -> results/charts/*.png
 python3 plot_paths.py     # -> results/charts/paths/*.png
+python3 plot_results.py   # -> results/charts/*.png
 make report               # -> design_report.docx (+ .pdf if LibreOffice is installed)
 ```
 
@@ -115,15 +126,6 @@ Run in that order — each step reads what the previous one wrote. The
 benchmark uses fixed random seeds, so `statesExplored`/cost figures
 reproduce exactly; wall-clock timings will vary slightly with your
 machine's load.
-
-## Dependencies:
-- C++17 compiler (g++/clang++)
-- Python 3 with `pandas` and
-`matplotlib` (`pip install -r pip_requirements.txt`) for the charts. 
-- Node.js with the `docx` package (`npm install`, reading `package.json`) only if you want to regenerate the `.docx` report — everything else works without Node.
-
-Full usage details (what each command does, how to read the output, how
-to troubleshoot) are in [USER_MANUAL.md](USER_MANUAL.md)
 
 ## Design highlights
 
