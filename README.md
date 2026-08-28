@@ -18,7 +18,7 @@ and replanning efficiently when the environment changes — using
 | 2 | Design report | [Design Report](design_report.pdf) |
 | 3 | Experimental results | `results/` |
 | 4 | User manual | [USER MANUAL](USER_MANUAL.md) |
-| 5 | Demonstration | [Demo Video](https://drive.google.com/file/d/1Qv3x9sbdiw0Ze6V9h2KS-mRM1EDt_UCM/view?usp=drive_link) |
+| 5 | Demonstration | [Demo Video](https://drive.google.com/file/d/1xhDQGUUWSoWwd7hZTWwjtevNR9DBPk1n/view?usp=sharing) |
 | Bonus | Incremental replanning | `LPAStarPlanner::onTransitionChanged` / `onStateBadnessChanged` / `onGoalChanged` + `replan()` — benchmarked in `results/charts/` |
 
 ## Dependencies:
